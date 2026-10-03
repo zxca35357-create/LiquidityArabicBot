@@ -82,7 +82,7 @@ def save_signal(symbol, timeframe, direction, confidence, score):
 async def api_get(path, params=None):
     if not OTC_API_KEY:
         raise RuntimeError(
-            "OTCHARTS_API_KEY غير موجود في Environment Variables."
+            "OTCHARTS_API_KEY ط؛ظٹط± ظ…ظˆط¬ظˆط¯ ظپظٹ Environment Variables."
         )
 
     headers = {
@@ -112,7 +112,7 @@ async def api_get(path, params=None):
                 import json
                 return json.loads(text)
             except Exception:
-                raise RuntimeError("OTC API رجع بيانات غير صالحة.")
+                raise RuntimeError("OTC API ط±ط¬ط¹ ط¨ظٹط§ظ†ط§طھ ط؛ظٹط± طµط§ظ„ط­ط©.")
 
 
 async def get_symbols():
@@ -316,7 +316,7 @@ def analyze(candles):
             "direction": "WAIT",
             "score": 0,
             "confidence": 0,
-            "reason": "عدد الشموع غير كافٍ للتحليل."
+            "reason": "ط¹ط¯ط¯ ط§ظ„ط´ظ…ظˆط¹ ط؛ظٹط± ظƒط§ظپظچ ظ„ظ„طھط­ظ„ظٹظ„."
         }
 
     closes = [c["close"] for c in candles]
@@ -347,51 +347,51 @@ def analyze(candles):
     if ema20 and ema50:
         if ema20 > ema50:
             score_call += 2
-            reasons_call.append("EMA20 فوق EMA50")
+            reasons_call.append("EMA20 ظپظˆظ‚ EMA50")
         elif ema20 < ema50:
             score_put += 2
-            reasons_put.append("EMA20 تحت EMA50")
+            reasons_put.append("EMA20 طھط­طھ EMA50")
 
     if ema200:
         if price > ema200:
             score_call += 1
-            reasons_call.append("السعر فوق EMA200")
+            reasons_call.append("ط§ظ„ط³ط¹ط± ظپظˆظ‚ EMA200")
         elif price < ema200:
             score_put += 1
-            reasons_put.append("السعر تحت EMA200")
+            reasons_put.append("ط§ظ„ط³ط¹ط± طھط­طھ EMA200")
 
     # RSI
     if current_rsi is not None:
 
         if 52 <= current_rsi <= 68:
             score_call += 1
-            reasons_call.append("RSI يدعم الصعود")
+            reasons_call.append("RSI ظٹط¯ط¹ظ… ط§ظ„طµط¹ظˆط¯")
 
         elif 32 <= current_rsi <= 48:
             score_put += 1
-            reasons_put.append("RSI يدعم الهبوط")
+            reasons_put.append("RSI ظٹط¯ط¹ظ… ط§ظ„ظ‡ط¨ظˆط·")
 
     # MACD
     if macd_line is not None:
 
         if macd_line > 0:
             score_call += 1
-            reasons_call.append("MACD موجب")
+            reasons_call.append("MACD ظ…ظˆط¬ط¨")
 
         elif macd_line < 0:
             score_put += 1
-            reasons_put.append("MACD سالب")
+            reasons_put.append("MACD ط³ط§ظ„ط¨")
 
     # Bollinger
     if upper and middle and lower:
 
         if price > middle:
             score_call += 1
-            reasons_call.append("السعر فوق منتصف Bollinger")
+            reasons_call.append("ط§ظ„ط³ط¹ط± ظپظˆظ‚ ظ…ظ†طھطµظپ Bollinger")
 
         elif price < middle:
             score_put += 1
-            reasons_put.append("السعر تحت منتصف Bollinger")
+            reasons_put.append("ط§ظ„ط³ط¹ط± طھط­طھ ظ…ظ†طھطµظپ Bollinger")
 
     # Support / resistance
     if support and resistance:
@@ -401,11 +401,11 @@ def analyze(candles):
 
         if distance_support < distance_resistance:
             score_call += 1
-            reasons_call.append("قرب دعم")
+            reasons_call.append("ظ‚ط±ط¨ ط¯ط¹ظ…")
 
         elif distance_resistance < distance_support:
             score_put += 1
-            reasons_put.append("قرب مقاومة")
+            reasons_put.append("ظ‚ط±ط¨ ظ…ظ‚ط§ظˆظ…ط©")
 
     # Candle momentum
     last = candles[-1]
@@ -420,11 +420,11 @@ def analyze(candles):
 
         if body > 0 and body_ratio >= 0.55:
             score_call += 1
-            reasons_call.append("شمعة صاعدة قوية")
+            reasons_call.append("ط´ظ…ط¹ط© طµط§ط¹ط¯ط© ظ‚ظˆظٹط©")
 
         elif body < 0 and body_ratio >= 0.55:
             score_put += 1
-            reasons_put.append("شمعة هابطة قوية")
+            reasons_put.append("ط´ظ…ط¹ط© ظ‡ط§ط¨ط·ط© ظ‚ظˆظٹط©")
 
     # ATR must exist
     if current_atr is None:
@@ -432,7 +432,7 @@ def analyze(candles):
             "direction": "WAIT",
             "score": 0,
             "confidence": 0,
-            "reason": "ATR غير متوفر."
+            "reason": "ATR ط؛ظٹط± ظ…طھظˆظپط±."
         }
 
     if score_call > score_put:
@@ -448,7 +448,7 @@ def analyze(candles):
     else:
         direction = "WAIT"
         score = 0
-        reasons = ["الإشارات متعادلة."]
+        reasons = ["ط§ظ„ط¥ط´ط§ط±ط§طھ ظ…طھط¹ط§ط¯ظ„ط©."]
 
     confidence = min(99, int((score / 10) * 100))
 
@@ -477,28 +477,28 @@ TIMEFRAMES = {
         "seconds": 60,
         "setup": 300,
         "trend": 900,
-        "expiry": "1 دقيقة",
+        "expiry": "1 ط¯ظ‚ظٹظ‚ط©",
     },
     "5": {
         "name": "M5",
         "seconds": 300,
         "setup": 900,
         "trend": 1800,
-        "expiry": "5 دقائق",
+        "expiry": "5 ط¯ظ‚ط§ط¦ظ‚",
     },
     "15": {
         "name": "M15",
         "seconds": 900,
         "setup": 1800,
         "trend": 3600,
-        "expiry": "15 دقيقة",
+        "expiry": "15 ط¯ظ‚ظٹظ‚ط©",
     },
     "30": {
         "name": "M30",
         "seconds": 1800,
         "setup": 3600,
         "trend": 3600,
-        "expiry": "30 دقيقة",
+        "expiry": "30 ط¯ظ‚ظٹظ‚ط©",
     },
 }
 
@@ -539,25 +539,25 @@ def timeframe_keyboard(symbol):
     return InlineKeyboardMarkup([
         [
             InlineKeyboardButton(
-                "1 دقيقة",
+                "1 ط¯ظ‚ظٹظ‚ط©",
                 callback_data=f"tf|{symbol}|1"
             )
         ],
         [
             InlineKeyboardButton(
-                "5 دقائق",
+                "5 ط¯ظ‚ط§ط¦ظ‚",
                 callback_data=f"tf|{symbol}|5"
             )
         ],
         [
             InlineKeyboardButton(
-                "15 دقيقة",
+                "15 ط¯ظ‚ظٹظ‚ط©",
                 callback_data=f"tf|{symbol}|15"
             )
         ],
         [
             InlineKeyboardButton(
-                "30 دقيقة",
+                "30 ط¯ظ‚ظٹظ‚ط©",
                 callback_data=f"tf|{symbol}|30"
             )
         ],
@@ -585,7 +585,7 @@ def symbol_keyboard(symbols, page=0):
     if page > 0:
         navigation.append(
             InlineKeyboardButton(
-                "⬅️ السابق",
+                "â¬…ï¸ڈ ط§ظ„ط³ط§ط¨ظ‚",
                 callback_data=f"page|{page-1}"
             )
         )
@@ -593,7 +593,7 @@ def symbol_keyboard(symbols, page=0):
     if start + page_size < len(symbols):
         navigation.append(
             InlineKeyboardButton(
-                "التالي ➡️",
+                "ط§ظ„طھط§ظ„ظٹ â‍،ï¸ڈ",
                 callback_data=f"page|{page+1}"
             )
         )
@@ -610,13 +610,13 @@ def symbol_keyboard(symbols, page=0):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
-        "🤖 أهلاً بك في LiquidityArabicBot\n\n"
-        "البوت جاهز لتحليل OTC.\n\n"
-        "الأوامر:\n"
-        "/otc — اختيار زوج OTC وتحليله\n"
-        "/history — سجل الإشارات\n"
-        "/stats — الإحصائيات\n"
-        "/today — إشارات اليوم\n"
+        "ًں¤– ط£ظ‡ظ„ط§ظ‹ ط¨ظƒ ظپظٹ LiquidityArabicBot\n\n"
+        "ط§ظ„ط¨ظˆطھ ط¬ط§ظ‡ط² ظ„طھط­ظ„ظٹظ„ OTC.\n\n"
+        "ط§ظ„ط£ظˆط§ظ…ط±:\n"
+        "/otc â€” ط§ط®طھظٹط§ط± ط²ظˆط¬ OTC ظˆطھط­ظ„ظٹظ„ظ‡\n"
+        "/history â€” ط³ط¬ظ„ ط§ظ„ط¥ط´ط§ط±ط§طھ\n"
+        "/stats â€” ط§ظ„ط¥ط­طµط§ط¦ظٹط§طھ\n"
+        "/today â€” ط¥ط´ط§ط±ط§طھ ط§ظ„ظٹظˆظ…\n"
     )
 
     await update.message.reply_text(text)
@@ -625,13 +625,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def otc(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not OTC_API_KEY:
         await update.message.reply_text(
-            "⚠️ البوت يعمل، لكن مفتاح بيانات OTC غير مضاف بعد.\n\n"
-            "نضيفه في Render كـ OTCHARTS_API_KEY في الخطوة التالية."
+            "âڑ ï¸ڈ ط§ظ„ط¨ظˆطھ ظٹط¹ظ…ظ„طŒ ظ„ظƒظ† ظ…ظپطھط§ط­ ط¨ظٹط§ظ†ط§طھ OTC ط؛ظٹط± ظ…ط¶ط§ظپ ط¨ط¹ط¯.\n\n"
+            "ظ†ط¶ظٹظپظ‡ ظپظٹ Render ظƒظ€ OTCHARTS_API_KEY ظپظٹ ط§ظ„ط®ط·ظˆط© ط§ظ„طھط§ظ„ظٹط©."
         )
         return
 
     await update.message.reply_text(
-        "⏳ جاري تحميل أزواج OTC المتاحة..."
+        "âڈ³ ط¬ط§ط±ظٹ طھط­ظ…ظٹظ„ ط£ط²ظˆط§ط¬ OTC ط§ظ„ظ…طھط§ط­ط©..."
     )
 
     try:
@@ -639,21 +639,21 @@ async def otc(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if not symbols:
             await update.message.reply_text(
-                "لم تصل قائمة أزواج OTC من مزود البيانات."
+                "ظ„ظ… طھطµظ„ ظ‚ط§ط¦ظ…ط© ط£ط²ظˆط§ط¬ OTC ظ…ظ† ظ…ط²ظˆط¯ ط§ظ„ط¨ظٹط§ظ†ط§طھ."
             )
             return
 
         context.user_data["symbols"] = symbols
 
         await update.message.reply_text(
-            f"📊 أزواج OTC المتاحة: {len(symbols)}\n\n"
-            "اختر الزوج:",
+            f"ًں“ٹ ط£ط²ظˆط§ط¬ OTC ط§ظ„ظ…طھط§ط­ط©: {len(symbols)}\n\n"
+            "ط§ط®طھط± ط§ظ„ط²ظˆط¬:",
             reply_markup=symbol_keyboard(symbols, 0),
         )
 
     except Exception as e:
         await update.message.reply_text(
-            f"❌ تعذر تحميل أزواج OTC.\n\n{str(e)[:500]}"
+            f"â‌Œ طھط¹ط°ط± طھط­ظ…ظٹظ„ ط£ط²ظˆط§ط¬ OTC.\n\n{str(e)[:500]}"
         )
 
 
@@ -673,11 +673,11 @@ async def history(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not rows:
         await update.message.reply_text(
-            "لا توجد إشارات مسجلة حتى الآن."
+            "ظ„ط§ طھظˆط¬ط¯ ط¥ط´ط§ط±ط§طھ ظ…ط³ط¬ظ„ط© ط­طھظ‰ ط§ظ„ط¢ظ†."
         )
         return
 
-    lines = ["📚 آخر الإشارات:\n"]
+    lines = ["ًں“ڑ ط¢ط®ط± ط§ظ„ط¥ط´ط§ط±ط§طھ:\n"]
 
     for row in rows:
         symbol, tf, direction, confidence, created_at = row
@@ -701,8 +701,8 @@ async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     con.close()
 
     await update.message.reply_text(
-        f"📊 إحصائيات البوت\n\n"
-        f"إجمالي الإشارات: {total}"
+        f"ًں“ٹ ط¥ط­طµط§ط¦ظٹط§طھ ط§ظ„ط¨ظˆطھ\n\n"
+        f"ط¥ط¬ظ…ط§ظ„ظٹ ط§ظ„ط¥ط´ط§ط±ط§طھ: {total}"
     )
 
 
@@ -723,7 +723,7 @@ async def today(update: Update, context: ContextTypes.DEFAULT_TYPE):
     con.close()
 
     await update.message.reply_text(
-        f"📅 إشارات اليوم: {total}"
+        f"ًں“… ط¥ط´ط§ط±ط§طھ ط§ظ„ظٹظˆظ…: {total}"
     )
 
 
@@ -743,8 +743,8 @@ async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         symbol = data.split("|", 1)[1]
 
         await query.edit_message_text(
-            f"💱 الزوج: {symbol}\n\n"
-            "اختر الفريم:",
+            f"ًں’± ط§ظ„ط²ظˆط¬: {symbol}\n\n"
+            "ط§ط®طھط± ط§ظ„ظپط±ظٹظ…:",
             reply_markup=timeframe_keyboard(symbol),
         )
 
@@ -758,13 +758,13 @@ async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if not symbols:
             await query.edit_message_text(
-                "انتهت الجلسة. استخدم /otc مرة أخرى."
+                "ط§ظ†طھظ‡طھ ط§ظ„ط¬ظ„ط³ط©. ط§ط³طھط®ط¯ظ… /otc ظ…ط±ط© ط£ط®ط±ظ‰."
             )
             return
 
         await query.edit_message_text(
-            f"📊 أزواج OTC — الصفحة {page + 1}\n\n"
-            "اختر الزوج:",
+            f"ًں“ٹ ط£ط²ظˆط§ط¬ OTC â€” ط§ظ„طµظپط­ط© {page + 1}\n\n"
+            "ط§ط®طھط± ط§ظ„ط²ظˆط¬:",
             reply_markup=symbol_keyboard(symbols, page),
         )
 
@@ -778,14 +778,14 @@ async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if not tf:
             await query.edit_message_text(
-                "فريم غير صالح."
+                "ظپط±ظٹظ… ط؛ظٹط± طµط§ظ„ط­."
             )
             return
 
         await query.edit_message_text(
-            f"🔎 جاري تحليل {symbol}\n"
-            f"الفريم: {tf['name']}\n\n"
-            "جاري فحص الاتجاه العام + الإعداد + الدخول..."
+            f"ًں”ژ ط¬ط§ط±ظٹ طھط­ظ„ظٹظ„ {symbol}\n"
+            f"ط§ظ„ظپط±ظٹظ…: {tf['name']}\n\n"
+            "ط¬ط§ط±ظٹ ظپط­طµ ط§ظ„ط§طھط¬ط§ظ‡ ط§ظ„ط¹ط§ظ… + ط§ظ„ط¥ط¹ط¯ط§ط¯ + ط§ظ„ط¯ط®ظˆظ„..."
         )
 
         try:
@@ -817,14 +817,14 @@ async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             if not confirmed:
                 await query.edit_message_text(
-                    f"⚠️ لا توجد إشارة مؤكدة الآن\n\n"
-                    f"💱 {symbol}\n"
-                    f"⏱ {tf['name']}\n\n"
-                    f"الدخول: {entry['direction']}\n"
-                    f"الإعداد: {setup['direction']}\n"
-                    f"الاتجاه العام: {trend['direction']}\n\n"
-                    f"النقاط: {final_score}\n\n"
-                    "تم رفض الإشارة لأن التأكيدات غير كافية."
+                    f"âڑ ï¸ڈ ظ„ط§ طھظˆط¬ط¯ ط¥ط´ط§ط±ط© ظ…ط¤ظƒط¯ط© ط§ظ„ط¢ظ†\n\n"
+                    f"ًں’± {symbol}\n"
+                    f"âڈ± {tf['name']}\n\n"
+                    f"ط§ظ„ط¯ط®ظˆظ„: {entry['direction']}\n"
+                    f"ط§ظ„ط¥ط¹ط¯ط§ط¯: {setup['direction']}\n"
+                    f"ط§ظ„ط§طھط¬ط§ظ‡ ط§ظ„ط¹ط§ظ…: {trend['direction']}\n\n"
+                    f"ط§ظ„ظ†ظ‚ط§ط·: {final_score}\n\n"
+                    "طھظ… ط±ظپط¶ ط§ظ„ط¥ط´ط§ط±ط© ظ„ط£ظ† ط§ظ„طھط£ظƒظٹط¯ط§طھ ط؛ظٹط± ظƒط§ظپظٹط©."
                 )
                 return
 
@@ -844,18 +844,18 @@ async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reasons = entry.get("reasons", [])
 
             reason_text = "\n".join(
-                f"• {r}" for r in reasons[:6]
+                f"â€¢ {r}" for r in reasons[:6]
             )
 
             message = (
-                "🟢 إشارة OTC مؤكدة\n\n"
-                f"💱 الزوج: {symbol}\n"
-                f"📈 الاتجاه: {direction}\n"
-                f"⏱ الفريم: {tf['name']}\n"
-                f"⌛ المدة المقترحة: {tf['expiry']}\n"
-                f"🔥 قوة الإعداد: {confidence}%\n"
-                f"📊 النقاط: {final_score}\n\n"
-                "أسباب التحليل:\n"
+                "ًںں¢ ط¥ط´ط§ط±ط© OTC ظ…ط¤ظƒط¯ط©\n\n"
+                f"ًں’± ط§ظ„ط²ظˆط¬: {symbol}\n"
+                f"ًں“ˆ ط§ظ„ط§طھط¬ط§ظ‡: {direction}\n"
+                f"âڈ± ط§ظ„ظپط±ظٹظ…: {tf['name']}\n"
+                f"âŒ› ط§ظ„ظ…ط¯ط© ط§ظ„ظ…ظ‚طھط±ط­ط©: {tf['expiry']}\n"
+                f"ًں”¥ ظ‚ظˆط© ط§ظ„ط¥ط¹ط¯ط§ط¯: {confidence}%\n"
+                f"ًں“ٹ ط§ظ„ظ†ظ‚ط§ط·: {final_score}\n\n"
+                "ط£ط³ط¨ط§ط¨ ط§ظ„طھط­ظ„ظٹظ„:\n"
                 f"{reason_text}"
             )
 
@@ -863,7 +863,7 @@ async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         except Exception as e:
             await query.edit_message_text(
-                "❌ حدث خطأ أثناء التحليل.\n\n"
+                "â‌Œ ط­ط¯ط« ط®ط·ط£ ط£ط«ظ†ط§ط، ط§ظ„طھط­ظ„ظٹظ„.\n\n"
                 f"{str(e)[:500]}"
             )
 
@@ -877,7 +877,7 @@ def main():
 
     if not token:
         raise RuntimeError(
-            "BOT_TOKEN غير موجود في Environment Variables."
+            "BOT_TOKEN ط؛ظٹط± ظ…ظˆط¬ظˆط¯ ظپظٹ Environment Variables."
         )
 
     init_db()
@@ -895,7 +895,7 @@ def main():
 
     if not external_url:
         raise RuntimeError(
-            "RENDER_EXTERNAL_URL غير موجود. شغّل الخدمة كـ Render Web Service."
+            "RENDER_EXTERNAL_URL ط؛ظٹط± ظ…ظˆط¬ظˆط¯. ط´ط؛ظ‘ظ„ ط§ظ„ط®ط¯ظ…ط© ظƒظ€ Render Web Service."
         )
 
     webhook_url = (
