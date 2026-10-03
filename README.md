@@ -1,19 +1,17 @@
-# LiquidityArabicBot
+# LiquidityArabicBot — Render Free Web Service
 
-بوت تيليجرام ابتدائي باللغة العربية.
+هذه النسخة معدلة لتعمل كـ Telegram webhook على Render Web Service المجاني بدل Background Worker المدفوع.
 
-## التشغيل
-1. ثبّت المتطلبات:
-   `pip install -r requirements.txt`
-2. ضع BOT_TOKEN في متغيرات البيئة.
-3. شغّل:
-   `python bot.py`
+## إعداد Render
 
-الأوامر:
-- /start
-- /history
-- /stats
-- /today
-- /otc
+- Service type: Web Service
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `python bot.py`
+- Plan: Free
+- Environment Variable:
+  - Key: `BOT_TOKEN`
+  - Value: توكن البوت من BotFather
 
-هذه النسخة لا تنفذ صفقات ولا تنشئ إشارات وهمية.
+Render يوفّر تلقائياً `RENDER_EXTERNAL_URL` للبوت، ويُستخدم لتسجيل Telegram webhook.
+
+> ملاحظة: خطة Render المجانية قد تدخل الخدمة في وضع السكون بعد فترة من عدم وجود طلبات. قد يؤدي ذلك إلى تأخر بسيط عند أول رسالة بعد السكون.
